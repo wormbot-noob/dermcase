@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vulvar Lesion Case – Teaching Webapp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      /* Typography */
+      --root-font-size: 16px;
+      --font-family-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+      /* Light theme (default) */
+      --bg: #f7f7fb;
+      --card-bg: #ffffff;
+      --accent: #324b7a;
+      --accent-soft: #e0e6f4;
+      --text-main: #222222;
+      --text-muted: #666666;
+      --border-soft: #e0e0e0;
+      --danger: #b00020;
+    }
+
+    /* Dark theme overrides */
+    body.dark {
+      --bg: #020617;
+      --card-bg: #020617;
+      --accent: #60a5fa;
+      --accent-soft: #1f2937;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border-soft: #334155;
+      --danger: #f97373;
+    }
+
+    html {
+      font-size: var(--root-font-size);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-family-main);
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    /* Top navbar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #ffffffcc;
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    body.dark header {
+      background: #020617dd;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.5rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      align-items: center;
+    }
+
+    .app-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .nav-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      align-items: center;
+      margin-left: auto;
+    }
+
+    .utility-button {
+      border: 1px solid var(--border-soft);
+      background: var(--card-bg);
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .utility-button:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .nav-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .nav-select {
+      font-size: 0.78rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: var(--card-bg);
+      color: var(--text-main);
+    }
+
+    nav.nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-left: 0;
+    }
+
+    .nav-button {
+      border: none;
+      background: transparent;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: background 0.15s ease, color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .nav-button:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .nav-button.active {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 1rem auto 2.5rem;
+      padding: 0 1rem;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn 0.15s ease-in;
+      padding-top: 0.3rem;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.1rem 1.2rem;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+      border: 1px solid var(--border-soft);
+      margin-bottom: 1.7rem; /* more space between blocks */
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .card-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin: 0 0 0.5rem;
+      color: var(--accent);
+    }
+
+    h3 {
+      font-size: 1.02rem;
+      margin: 0.7rem 0 0.35rem;
+    }
+
+    p {
+      margin: 0.45rem 0;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    ul,
+    ol {
+      margin: 0.25rem 0 0.6rem 1.2rem;
+      padding: 0;
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-right: 0.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .badge-danger {
+      background: #fde4ea;
+      color: var(--danger);
+    }
+
+    body.dark .badge-danger {
+      background: #451924;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 1.1rem;
+    }
+
+    .muted {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .image-placeholder {
+      border-radius: 10px;
+      border: 1px dashed var(--border-soft);
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    .table-like {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .table-like th,
+    .table-like td {
+      border: 1px solid var(--border-soft);
+      padding: 0.5rem 0.6rem;
+      vertical-align: top;
+    }
+
+    .table-like th {
+      background: #f2f4fb;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.86rem;
+    }
+
+    body.dark .table-like th {
+      background: #020617;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin-top: 0.4rem;
+    }
+
+    /* TIMELINE: dates big, text lighter, more spacing */
+    .timeline {
+      border-left: 3px solid var(--accent-soft);
+      padding-left: 1.2rem;
+      margin-top: 0.8rem;
+    }
+
+    .timeline-item {
+      margin-bottom: 1.3rem;
+      padding: 0.7rem 0.9rem 0.7rem 0;
+      border-radius: 12px;
+      background: rgba(148, 163, 184, 0.06);
+    }
+
+    body.dark .timeline-item {
+      background: #020617;
+    }
+
+    .timeline-item::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      position: absolute;
+      left: -1.35rem;
+      top: 0.9rem;
+    }
+
+    .timeline-label {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-item p,
+    .timeline-item ul {
+      font-size: 0.88rem;   /* a bit smaller than main text */
+      line-height: 1.7;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-controls {
+        margin-left: 0;
+      }
+      nav.nav-links {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .grid-2 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  /* INTERACTIVE TIMELINE */
+.interactive-timeline {
+  max-width: 100%;
+  margin-top: 1rem;
+  position: relative;
+  border-left: 4px solid var(--accent);
+  padding-left: 1.5rem;
+}
+
+.timeline-event {
+  position: relative;
+  margin-bottom: 1.8rem;
+  cursor: pointer;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -2rem;
+  top: 0.2rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  background: var(--accent);
+  border-radius: 50%;
+  border: 3px solid var(--card-bg);
+  box-shadow: 0 0 0 3px var(--accent);
+  transition: transform 0.3s ease;
+}
+
+.timeline-event.open .timeline-dot {
+  transform: scale(1.25);
+  background: var(--accent);
+}
+
+.timeline-date {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+
+.timeline-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.timeline-details {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: all 0.35s ease;
+}
+
+.timeline-event.open .timeline-details {
+  max-height: 600px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.timeline-event:hover .timeline-title {
+  color: var(--accent);
+}
+
+  </style>
+
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header>
+    <div class="nav-container">
+      <div class="app-title">
+        Vulvar Lesion Case &mdash; Teaching Webapp
+      </div>
+
+      <div class="nav-controls">
+        <button id="theme-toggle" class="utility-button" type="button">
+          Light / Dark
+        </button>
+
+        <label class="nav-label">
+          Font:
+          <select id="font-select" class="nav-select">
+            <option value="sans">Sans-serif</option>
+            <option value="serif">Serif</option>
+            <option value="mono">Monospace</option>
+          </select>
+        </label>
+
+        <label class="nav-label">
+          Size:
+          <select id="font-size-select" class="nav-select">
+            <option value="small">Small</option>
+            <option value="medium" selected>Medium</option>
+            <option value="large">Large</option>
+          </select>
+        </label>
+
+        <button id="print-btn" class="utility-button" type="button">
+          Export / Print
+        </button>
+      </div>
+
+      <nav class="nav-links">
+        <button class="nav-button active" data-target="overview">Overview</button>
+        <button class="nav-button" data-target="clinical">Clinical</button>
+        <button class="nav-button" data-target="differentials">Differentials</button>
+        <button class="nav-button" data-target="investigations">Investigations</button>
+        <button class="nav-button" data-target="histopathology">Histopathology</button>
+        <button class="nav-button" data-target="vulvar-crohns">Vulvar Crohn’s in the Literature</button>
+        <button class="nav-button" data-target="treatment-prognosis">VCD Tx & Prognosis</button>
+        <button class="nav-button" data-target="vulvar-gpa">Vulvar GPA in the Literature</button>
+        <button class="nav-button" data-target="course">Clinical Course</button>
+        <button class="nav-button" data-target="learning">Teaching Points</button>
+        <button class="nav-button" data-target="patient-perspective">Patient</button>
+        <button class="nav-button" data-target="references">References</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- PAGE: OVERVIEW -->
+    <section id="overview" class="page active">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Case Overview</div>
+          <div class="card-subtitle">Non-identifying summary</div>
+        </div>
+        <p>
+          A 53-year-old perimenopausal woman presents with a 2-month history of
+          painful vulvar and perianal ulcers and fissures, with biopsy
+          demonstrating necrotizing granulomatous inflammation and negative
+          infectious stains, in the setting of dual-positive PR3/MPO ANCA,
+          without oral involvement and with gastrointestinal status not yet
+          assessed in the current episode.
+        </p>
+        <div class="tag-row">
+          <span class="pill">vulvar &amp; perianal ulcers</span>
+          <span class="pill">necrotizing granulomas</span>
+          <span class="pill">PR3/MPO ANCA+</span>
+          <span class="pill badge-danger">teaching case</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Patient Background</div>
+          <div class="card-subtitle">Past history & context</div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <h3>Chronic conditions</h3>
+            <ul>
+              <li>
+                Iron deficiency anemia secondary to chronic heavy menstrual
+                bleeding; required multiple PRBC transfusions (2022, 2023).
+              </li>
+              <li>
+                Adenomyosis and posterior wall uterine fibroid (~3.5 cm).
+              </li>
+              <li>
+                Supraventricular tachycardia (SVT)
+                <br />&gt; Status post SVT ablation (Aug 2024).
+              </li>
+              <li>
+                Primary hyperparathyroidism (right inferior parathyroid adenoma)
+                <br />&gt; Status post parathyroidectomy (Sep 2022).
+              </li>
+              <li>No known drug allergies.</li>
+            </ul>
+
+            <h3>Prior infections / inflammatory conditions</h3>
+            <ul>
+              <li>
+                H. pylori gastritis (2022) &rarr; treated with levofloxacin-based
+                therapy; eradicated.
+              </li>
+              <li>
+                Chronic endometritis on D&amp;C (Dec 2023)
+                &rarr; treated with doxycycline.
+              </li>
+              <li>
+                Pelvic inflammatory disease (PID) (Feb 2024)
+                &rarr; treated with metronidazole + cefuroxime.
+              </li>
+              <li>
+                January 2025: nonspecific inflammatory vulvovaginitis with
+                maceration and secondary infection, presenting with:
+                <ul>
+                  <li>Vulvar/perianal white plaques.</li>
+                  <li>Superficial labial ulcer.</li>
+                  <li>Copious discharge.</li>
+                </ul>
+                &rarr; Resolved completely within 1 week on clindamycin + Polygynax.
+                <br />&rarr; Distinct from later necrotizing granulomatous disease.
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Gynecologic history</h3>
+            <ul>
+              <li>
+                Long-standing heavy menstrual bleeding (perimenopausal), at times
+                severe enough to cause Hb 6.7 g/dL.
+              </li>
+              <li>
+                Heavy bleeding controlled with Aminor (norethisterone) for 6
+                months; heavy bleeding recurred after discontinuation.
+              </li>
+              <li>Perimenopausal; LMP July 2025.</li>
+              <li>
+                Pap smears:
+                <ul>
+                  <li>Jan 2025: ASC-US with atypical parakeratosis.</li>
+                  <li>Sept 2025: NILM (acute inflammation only).</li>
+                </ul>
+              </li>
+              <li>HPV test: negative (Sept 2025).</li>
+            </ul>
+
+            <h3>Gastrointestinal history</h3>
+            <ul>
+              <li>
+                2022: GI work-up for anemia:
+                <ul>
+                  <li>EGD: mild gastritis; H. pylori detected and treated.</li>
+                  <li>Colonoscopy: normal.</li>
+                </ul>
+              </li>
+              <li>
+                Colonoscopy planned again in 2025 to evaluate current
+                necrotizing granulomatous disease, but not yet completed at the
+                time of dermatology assessment.
+              </li>
+            </ul>
+
+            <h3>Family history</h3>
+            <ul>
+              <li>Breast cancer in a sister (age 50).</li>
+              <li>HCC in a sister.</li>
+              <li>Sarcoma in brother.</li> 
+            
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: CLINICAL PRESENTATION -->
+    <section id="clinical" class="page">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Clinical Presentation</div>
+          <div class="card-subtitle">History & examination</div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <h3>Chief complaint</h3>
+            <p>
+              Referred due to recurrent perianal cysts and abscesses and a
+              vaginal/vulvar ulcer, to rule out Crohn’s disease. She reports no
+              gastrointestinal symptoms (no rectal bleeding, no change in bowel
+              habit) at the time of evaluation.
+            </p>
+
+            <h3>History of present illness</h3>
+            <p>
+              Approximately from June 2025, she developed vulvar pruritus,
+              vaginal discharge and dyspareunia, along with recurrent painful
+              perineal and vaginal papules and cysts that drained spontaneously
+              with yellow, blood-streaked pus. She notes pain with defecation
+              during flares but no rectal bleeding. Bowels habits have not
+              changed. Her husband is asymptomatic.
+            </p>
+            <p>
+              By late September to early October 2025, she developed painful
+              slit-like linear vulvar ulcers and a slit-like intergluteal
+              “knife-cut” fissure, along with multiple perianal fissures and
+              erosions and foul yellow discharge with pruritus. Pain score was
+              at times documented as 0/10 on examination, despite significant
+              local discomfort historically.
+            </p>
+            <p>
+              A vaginal/vulvar biopsy taken on 8/10/2025 for the ulcerative
+              lesion revealed necrotizing granulomatous inflammation. The
+              pathology differential included infection (fungal infection,
+              mycobacterial tuberculosis, atypical mycobacteria), autoimmune
+              disease and foreign body reaction. Infectious stains including
+              PAS and Ziehl–Neelsen were reported as negative, and there was no
+              evidence of malignancy.
+            </p>
+            <p>
+              She was admitted under the gynecology team from 22–29 October
+              2025 for an infected vulvar ulcer post-biopsy, with a slit-like
+              intergluteal fissure and multiple perianal fissures/erosions.
+              During admission, she was afebrile, with no rectal bleeding and no
+              change in bowel habit.
+            </p>
+          </div>
+          <div>
+            <h3>Examination</h3>
+            <p>
+              At the time of dermatology review, systemic examination was
+              documented as unremarkable.
+            </p>
+            <p>
+              Local examination during and after admission showed:
+            </p>
+            <ul>
+              <li>
+                Large vulvar ulcer at the biopsy site, with features of
+                infection initially and later granulation tissue.
+              </li>
+              <li>
+                Persistent slit-like ulcer/fissure in the intergluteal cleft.
+              </li>
+              <li>
+                Multiple perianal fissures, nodules and erosions.
+              </li>
+              <li>
+                Significant pruritus, foul yellow discharge and pain with
+                defecation, but no anal bleeding.
+              </li>
+            </ul>
+            <p class="muted">
+              Examination at a later OB-GYN follow-up noted major improvement in
+              the vulvar wound with granulation tissue, but symptoms had not
+              fully resolved.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Clinical Images</div>
+          <div class="card-subtitle">Timeline-based placeholders</div>
+        </div>
+        <p class="muted">
+          Replace each placeholder with an <code>&lt;img&gt;</code> tag once
+          images are ready, ensuring consent and anonymisation.
+        </p>
+        <div class="image-grid">
+          <div class="image-placeholder">
+            Jan 2025: nonspecific inflammatory vulvovaginitis with white plaques
+            and superficial ulcer (resolved with antibiotics/Polygynax)
+          </div>
+          <div class="image-placeholder">
+            Jun–Sep 2025: painful draining perineal/vulvar nodules and cysts
+            (pre-ulcer stage)
+          </div>
+          <div class="image-placeholder">
+            Late Sep–Oct 2025: vulvar ulcer post-biopsy, knife-cut intergluteal
+            fissure, perianal fissures/erosions
+          </div>
+          <div class="image-placeholder">
+            Post-discharge: granulation tissue with residual ulcer and fissures
+            prior to systemic steroid/fluconazole trial
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: DIFFERENTIALS -->
+<section id="differentials" class="page">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Differential Diagnoses</div>
+      <div class="card-subtitle">Ranked from most to least likely (current working list)</div>
+    </div>
+
+    <table class="table-like">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Diagnosis</th>
+          <th>Reasons supporting</th>
+          <th>Reasons against / gaps</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Metastatic cutaneous Crohn’s disease</td>
+          <td>
+            <ul>
+              <li>“Knife-cut” intergluteal fissure</li>
+              <li>Vulvar + perianal + intergluteal distribution</li>
+              <li>Chronic nodules evolving into ulcers</li>
+              <li>Early Crohn’s may lack GI symptoms</li>
+              <li>Colonoscopy for current episode pending</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Crohn’s granulomas usually non-necrotizing</li>
+              <li>Dual PR3/MPO ANCA positivity unusual for Crohn’s</li>
+              <li>January episode’s quick resolution atypical for Crohn’s</li>
+              <li>No bowel habit changes</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Granulomatosis with polyangiitis (GPA)</td>
+          <td>
+            <ul>
+              <li>Necrotizing granulomatous inflammation</li>
+              <li>Dual-positive ANCA (PR3 20, MPO 15.3)</li>
+              <li>Markedly elevated ESR (95)</li>
+              <li>Vulvar, perianal, intergluteal involvement</li>
+              <li>Negative infectious stains</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Chest X-ray unremarkable</li>
+              <li>Urinalysis normal (no proteinuria/hematuria)</li>
+              <li>No ENT, pulmonary, or renal involvement documented so far</li>
+              <li>Vulvar/perianal-limited GPA is rare; genital involvement reported in &lt;1% of GPA cases</li>
+              <li>Rheumatology follow-up pending</li>
+            </ul>
+          </td>
+        </tr>
+
+        <tr>
+          <td>3</td>
+          <td>Atypical mycobacterial infection</td>
+          <td>
+            <ul>
+              <li>Necrotizing granulomas compatible with NTM</li>
+              <li>Often stain-negative; requires culture/PCR</li>
+              <li>Suggested by Infectious Disease team</li>
+              <li>Chronic ulcers/fissures can mimic Crohn’s or vasculitis</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>AFB stain negative</li>
+              <li>No mycobacterial cultures performed</li>
+              <li>No systemic symptoms</li>
+              <li>Repeat wound culture negative (post-antibiotics)</li>
+            </ul>
+          </td>
+        </tr>
+
+        
+
+        <tr>
+          <td>4</td>
+          <td>Deep fungal infection</td>
+          <td>
+            <ul>
+              <li>Deep fungi can cause necrotizing granulomas</li>
+              <li>Included in Infectious Disease differential</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>PAS/GMS stains negative</li>
+              <li>No clear exposure risks documented</li>
+              <li>No systemic symptoms</li>
+            </ul>
+          </td>
+        </tr>
+
+        <tr>
+          <td>5</td>
+          <td>Secondary syphilis</td>
+          <td>
+            <ul>
+              <li>Considered early for any genital ulcer</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>VDRL negative</li>
+              <li>Histology incompatible</li>
+            </ul>
+          </td>
+        </tr>
+
+        <tr>
+          <td>6</td>
+          <td>Autoimmune granulomatous vulvitis / immune-mediated process</td>
+          <td>
+            <ul>
+              <li>Persistent inflammation at multiple sites</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Does not strongly explain necrotizing granulomas</li>
+              <li>Diagnosis of exclusion</li>
+            </ul>
+          </td>
+        </tr>
+
+        <tr>
+          <td>7</td>
+          <td>Foreign body / secondary infection</td>
+          <td>
+            <ul>
+              <li>Polarizable foreign material in giant cells</li>
+              <li>Initial culture: Group B Strep + coagulase-negative Staph</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Does not explain necrotizing granulomas</li>
+              <li>Infection resolved but ulcers persisted</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+    <!-- PAGE: INVESTIGATIONS -->
+    <section id="investigations" class="page">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Investigations to Date</div>
+          <div class="card-subtitle">During Oct 2025 admission</div>
+        </div>
+
+        <h3>Laboratory (rheumatology work-up)</h3>
+        <ul>
+          <li>ESR: 95.</li>
+          <li>CRP (quantitative): 2.22.</li>
+          <li>ANA: 1:40, fine speckled.</li>
+          <li>ENA panel: negative.</li>
+          <li>ANCA:
+            <ul>
+              <li>MPO: 15.3 (positive).</li>
+              <li>PR3: 20 (positive).</li>
+            </ul>
+          </li>
+          <li>HbA<sub>1c</sub>: 6.18%.</li>
+        </ul>
+
+        <h3>Microbiology & serology</h3>
+        <ul>
+          <li>
+            Wound culture (initial): Group B Streptococcus and
+            coagulase-negative Staphylococcus &rarr; prompted IV ceftriaxone +
+            metronidazole, then switch to Augmentin.
+          </li>
+          <li>Repeat wound culture after IV antibiotics: no growth.</li>
+          <li>VDRL: negative.</li>
+          <li>HIV: negative.</li>
+          <!-- HBsAg / HCV were provided earlier from labs; keep only if you want -->
+        </ul>
+
+        <h3>Urinalysis & imaging</h3>
+        <ul>
+          <li>Urinalysis: no proteinuria, no hematuria.</li>
+          <li>Chest X-ray: unremarkable.</li>
+        </ul>
+
+        <h3>Endoscopy</h3>
+        <ul>
+          <li>Colonoscopy 2022: normal (performed for anemia work-up).</li>
+          <li>
+            Colonoscopy for current necrotizing granulomatous disease: planned
+            but not yet performed.
+          </li>
+          <li>
+            EGD 2022: mild gastritis; H. pylori detected and treated
+            successfully.
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Outstanding Investigations</div>
+          <div class="card-subtitle">Dermatology + Rheumatology + GI plan</div>
+        </div>
+        <ol>
+          <li>
+            Repeat infectious work-up (as recommended): mycobacterial culture
+            and PCR, deep fungal culture and PCR, and any pending tests from the
+            suggested panel.
+          </li>
+          <li>
+            Gastroenterology assessment for Crohn’s disease:
+            colonoscopy and fecal calprotectin.
+          </li>
+          <li>
+            Rheumatology follow-up for ANCA-positive necrotizing granulomatous
+            disease: further vasculitis assessment (including imaging and serial
+            renal monitoring as clinically indicated).
+          </li>
+          <li>
+            Consider re-biopsy from the ulcer edge with specimens sent for
+            histology, culture, AFB and fungal stains, and PCR if needed.
+          </li>
+          <li>Continue wound care and avoid aggressive debridement.</li>
+          <li>
+            Use systemic steroids cautiously until infection has been
+            adequately excluded.
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- PAGE: HISTOPATHOLOGY -->
+<section id="histopathology" class="page">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Histopathology</div>
+      <div class="card-subtitle">Clinical data, macroscopic & microscopic findings</div>
+    </div>
+
+    <!-- Clinical Data -->
+    <h3>Clinical Data</h3>
+    <p>
+      Multiple vulvar and white plaques with left vulvar ulcer.
+    </p>
+
+    <!-- Macroscopic -->
+    <h3>Macroscopic Description</h3>
+
+    <div style="margin-bottom:1.2rem;">
+      <p><span style="background:rgba(255,249,196,0.7);">1 – Punch biopsy</span></p>
+      <p>
+        Specimen fixed in formalin labelled "punch biopsy" and consists of a punch biopsy
+        measuring 0.4 × 0.3 × 0.5 (depth) cm.<br>
+        Totally submitted in 1 cassette.
+      </p>
+    </div>
+
+    <div style="margin-bottom:1.2rem;">
+      <p><span style="background:rgba(255,249,196,0.7);">2 – Multiple fragments</span></p>
+      <p>
+        Specimen fixed in formalin labelled with patient's name and consists of multiple fragments
+        of grayish tissue measuring in aggregate 1 × 0.5 cm.<br>
+        Totally submitted in 1 cassette.
+      </p>
+    </div>
+
+    <div style="margin-bottom:1.2rem;">
+      <p><span style="background:rgba(255,249,196,0.7);">3 – Vulvar biopsy</span></p>
+      <p>
+        Specimen fixed in formalin labelled "vulvar biopsy" and consists of 2 skin ellipses:
+      </p>
+      <ul>
+        <li>Largest: 4.5 × 1.5 × 0.5 cm</li>
+        <li>Second: 1.3 × 0.5 × 0.3 cm</li>
+        <li>Additional skin biopsy: 0.6 × 0.5 cm</li>
+      </ul>
+      <p>
+        The deep and periphery of both skin ellipses are inked black.<br><br>
+        <span style="background:rgba(255,249,196,0.7);">An ulcer is identified on the largest ellipse</span>
+        measuring 2 × 0.5 cm, with eroded skin measuring 0.5 × 0.2 cm.<br>
+        This ulcer is:
+      </p>
+      <ul>
+        <li>0.5 cm from the closest peripheral margin</li>
+        <li>2 cm from the opposite peripheral margin</li>
+      </ul>
+      <p><strong>Cassettes:</strong></p>
+      <ul>
+        <li>A: Skin biopsy</li>
+        <li>B: Tips of largest ellipse</li>
+        <li>C–E: Center of largest ellipse</li>
+        <li>F: Tips of second ellipse</li>
+        <li>G: Center of second ellipse</li>
+      </ul>
+    </div>
+
+    <!-- Microscopic -->
+    <h3>Microscopic Description</h3>
+
+    <div style="margin-bottom:1.2rem;">
+      <p><span style="background:rgba(255,249,196,0.7);">Specimen 1</span></p>
+      <p>
+        Sections show chronic active inflammation along with
+        <span style="background:rgba(255,249,196,0.7);">necrotizing granulomas</span>
+        involving the upper to mid dermis. The infiltrate is lymphoplasmacytic with neutrophils
+        and eosinophils.
+      </p>
+      <p>
+        PAS, Gram, Ziehl–Neelsen and Warthin–Starry stains fail to highlight fungal, bacterial,
+        acid-fast bacilli or other microorganisms.
+      </p>
+      <p>
+        Overlying epidermis: acanthosis, spongiosis with lymphocytic exocytosis.
+      </p>
+    </div>
+
+    <div style="margin-bottom:1.2rem;">
+      <p><span style="background:rgba(255,249,196,0.7);">Specimen 3</span></p>
+      <p>
+        Sections show a large ulcer site and chronic active inflammation with
+        <span style="background:rgba(255,249,196,0.7);">necrotizing granulomas</span>
+        involving the upper to mid dermis. The infiltrate is lymphoplasmacytic with neutrophils
+        and multinucleated giant cells
+        <span style="background:rgba(255,249,196,0.7);">(some engulfing polarizable foreign body material)</span>,
+        along with granulation tissue formation.
+      </p>
+      <p>
+        Few bacterial structures are identified and highlighted by Gram stain.
+        PAS, Ziehl–Neelsen and Warthin–Starry stains are negative for fungal, AFB and other microorganisms.
+      </p>
+      <p>
+        Overlying epidermis: acanthosis, spongiosis with lymphocytic exocytosis and neutrophilic exudate.<br>
+        No evidence of malignancy.
+      </p>
+    </div>
+
+    <!-- Diagnosis -->
+    <h3>Diagnosis</h3>
+
+    <p><strong>1 – Skin, perineum, punch biopsy:</strong></p>
+    <ul>
+      <li><span style="background:rgba(255,249,196,0.7);">Necrotizing granulomatous inflammation</span>, see comment.</li>
+      <li>No evidence of malignancy.</li>
+    </ul>
+
+    <p><strong>2 – Uterus, dilatation and curettage:</strong></p>
+    <ul>
+      <li>Inactive atrophic endometrium.</li>
+      <li>No evidence of endometrial hyperplasia or malignancy.</li>
+    </ul>
+
+    <p><strong>3 – Skin, vulva, left, excision:</strong></p>
+    <ul>
+      <li><span style="background:rgba(255,249,196,0.7);">Necrotizing granulomatous inflammation with ulcer site</span>, see comment.</li>
+      <li>No evidence of malignancy.</li>
+    </ul>
+
+    <!-- Comment -->
+    <h3>Comment</h3>
+    <p>
+      The differential diagnosis for granulomatous inflammation is wide and can be associated with different
+      etiologies including but not limited to:
+    </p>
+    <ul>
+      <li><span style="background:rgba(255,249,196,0.7);">Infectious causes</span> (fungal, mycobacterial tuberculosis, atypical mycobacteria)</li>
+      <li><span style="background:rgba(255,249,196,0.7);">Autoimmune diseases</span></li>
+      <li><span style="background:rgba(255,249,196,0.7);">Foreign body–type giant cell reaction</span></li>
+    </ul>
+    <p>Clinical and microbiologic correlation is recommended.</p>
+
+  </div>
+</section>
+
+
+    <!-- PAGE: VULVAR CROHN'S LITERATURE REVIEW -->
+<section id="vulvar-crohns" class="page">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Vulvar / Anogenital Metastatic Crohn’s Disease</div>
+      <div class="card-subtitle">Chronological literature summary</div>
+    </div>
+
+    <p class="muted">
+      Chronological summary of key studies on vulvar / anogenital metastatic Crohn’s disease, based on the authors’ compiled review.
+    </p>
+
+    <table class="table-like">
+      <thead>
+        <tr>
+          <th>Study</th>
+          <th>Year</th>
+          <th>Type / Sample</th>
+          <th>Anatomic involvement</th>
+          <th>Histopathology</th>
+          <th>Treatment (reported)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Parks AG et al., Proc R Soc Med<br><span class="muted">(first description of metastatic Crohn’s)</span></td>
+          <td>1965</td>
+          <td>6 patients</td>
+          <td>Cutaneous lesions remote from GI tract; vulvar sites not detailed</td>
+          <td>Non-caseating granulomas</td>
+          <td>Early corticosteroids; sulfasalazine</td>
+        </tr>
+
+        <tr>
+          <td>Porzionato et al., J Pediatr Surg</td>
+          <td>2005</td>
+          <td>Single pediatric case</td>
+          <td>Vulvar swelling + perianal fissures</td>
+          <td>Non-caseating epithelioid granulomas</td>
+          <td>Systemic corticosteroids</td>
+        </tr>
+
+        <tr>
+          <td>Andreani et al., Int J Surg</td>
+          <td>2010</td>
+          <td>Review of ~57 reported cases</td>
+          <td>Vulvar edema, fissures, ulcers; 30–50% perianal disease; ~30% without GI Crohn’s initially</td>
+          <td>Non-caseating granulomas</td>
+          <td>Metronidazole; systemic steroids; azathioprine; anti-TNF agents</td>
+        </tr>
+
+        <tr>
+          <td>Barret et al., J Crohn’s &amp; Colitis<br><span class="muted">(systematic review – 86 cases)</span></td>
+          <td>2014</td>
+          <td>Systematic review (86 cases)</td>
+          <td>67% labial swelling; 40% vulvar ulcers; 48% perianal disease; 25% vulvar-first presentation</td>
+          <td>Non-caseating tuberculoid granulomas</td>
+          <td>Metronidazole; systemic steroids; azathioprine; anti-TNF; surgery for refractory cases</td>
+        </tr>
+
+        <tr>
+          <td>Laftah et al., J Crohn’s Colitis</td>
+          <td>2015</td>
+          <td>22-patient cohort</td>
+          <td>36% vulvar disease without intestinal Crohn’s; 41% perianal disease</td>
+          <td>Granulomatous inflammation (non-necrotizing)</td>
+          <td>Topical/systemic steroids; 57% azathioprine; anti-TNF therapy</td>
+        </tr>
+
+        <tr>
+          <td>Shields et al., JAAD Case Rep / Review</td>
+          <td>2020</td>
+          <td>Case series + narrative review</td>
+          <td>Knife-cut fissures; vulvar edema; 30–40% perianal involvement</td>
+          <td>Non-caseating granulomas</td>
+          <td>Antibiotics for superinfection; metronidazole; thiopurines; anti-TNF therapy</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PAGE: TREATMENT & PROGNOSIS OF VULVAR / ANOGENITAL CROHN’S -->
+<section id="treatment-prognosis" class="page">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Treatment vs Prognosis in Vulvar / Anogenital Crohn’s Disease</div>
+      <div class="card-subtitle">Summary of reported effectiveness across case literature</div>
+    </div>
+
+    <h3>Treatment (What the literature consistently shows)</h3>
+
+    <h4><strong>First line / frequently effective</strong></h4>
+    <ul>
+      <li><strong>Metronidazole</strong> – most consistently effective early therapy; may give rapid but partial improvement.</li>
+      <li><strong>Topical / intralesional corticosteroids</strong> – symptomatic relief.</li>
+      <li><strong>Systemic corticosteroids</strong> – for more severe inflammatory disease.</li>
+    </ul>
+
+    <h4><strong>Second-line / for persistent or recurrent disease</strong></h4>
+    <ul>
+      <li><strong>Azathioprine</strong> (≈57% of patients in Laftah) – for persistent or recurrent disease.</li>
+      <li><strong>Methotrexate</strong> – alternative immunomodulator.</li>
+    </ul>
+
+    <h4><strong>Biologics</strong></h4>
+    <ul>
+      <li><strong>Anti-TNF agents (Infliximab, Adalimumab)</strong>
+        <ul>
+          <li>Highly effective in refractory cases.</li>
+          <li>Frequently required for long-term disease control.</li>
+        </ul>
+      </li>
+      <li><strong>Antibiotics</strong> – treat secondary infection only; do not resolve the granulomatous disease.</li>
+    </ul>
+
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Prognosis</div>
+      <div class="card-subtitle">Patterns described across case reports and series</div>
+    </div>
+
+    <ul>
+      <li>Chronic, relapsing, often refractory course.</li>
+      <li><strong>“Vulvar-only Crohn’s”</strong> tends to be more treatment-resistant.</li>
+      <li>Better long-term outcomes with early immunomodulators/biologics.</li>
+      <li>Delayed diagnosis → worse morbidity, more aggressive disease.</li>
+      <li>Risk of future intestinal Crohn’s: <strong>≈30–40%</strong> eventually develop GI involvement.</li>
+      <li>Secondary infection (e.g., GBS, Staph) frequently complicates the course.</li>
+      <li>Potential for scarring and architectural distortion in chronic disease.</li>
+    </ul>
+  </div>
+
+</section>
+<!-- PAGE: VULVAR GPA LITERATURE -->
+<section id="vulvar-gpa" class="page">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Vulvar / Gynecologic GPA (ANCA-Associated Vasculitis)</div>
+      <div class="card-subtitle">Summary of published cases</div>
+    </div>
+
+    <p class="muted">
+      Chronological summary of published cases of vulvar or gynecologic involvement in ANCA-associated vasculitis (GPA / EGPA), based strictly on the extracted table. :contentReference[oaicite:1]{index=1}
+    </p>
+
+    <table class="table-like">
+      <thead>
+        <tr>
+          <th>Study</th>
+          <th>Year</th>
+          <th>Type / Sample</th>
+          <th>Anatomic involvement</th>
+          <th>Histopathology</th>
+          <th>Treatment reported</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr>
+          <td>Lewis, <em>J Reprod Med</em><br>“Vulvar involvement in Wegener’s granulomatosis”</td>
+          <td>2002</td>
+          <td>Single case</td>
+          <td>Vulva</td>
+          <td>Necrotizing granulomatous vasculitis</td>
+          <td>Corticosteroids + cyclophosphamide</td>
+        </tr>
+
+        <tr>
+          <td>Bastone et al., <em>Clin Exp Rheumatol</em></td>
+          <td>2015</td>
+          <td>Single case</td>
+          <td>Cervix &amp; upper vagina</td>
+          <td>Necrotizing granulomatous vasculitis</td>
+          <td>Rituximab</td>
+        </tr>
+
+        <tr>
+          <td>Pereira et al., <em>Int J Environ Res Public Health</em><br>Case + review</td>
+          <td>2022</td>
+          <td>Case + literature review</td>
+          <td>Vulva, cervix, uterus</td>
+          <td>Necrotizing granulomatous vasculitis; ANCA-positive</td>
+          <td>High-dose corticosteroids + rituximab</td>
+        </tr>
+
+        <tr>
+          <td>Nowak et al., <em>Int J Environ Res Public Health</em><br>“Vulvar involvement mimicking carcinoma”</td>
+          <td>2022</td>
+          <td>Single case</td>
+          <td>Labium minus</td>
+          <td>Necrotizing granulomatous vasculitis</td>
+          <td>Corticosteroids + cyclophosphamide</td>
+        </tr>
+
+        <tr>
+          <td>Swain et al., <em>J Pediatr Adolesc Gynecol</em> (EGPA)</td>
+          <td>2019</td>
+          <td>Pediatric case</td>
+          <td>Vulvar granuloma</td>
+          <td>Granulomatous vasculitis with eosinophils</td>
+          <td>Prednisone → methotrexate → mycophenolate</td>
+        </tr>
+
+        <tr>
+          <td>Živanović et al., <em>J Pediatr Adolesc Gynecol</em><br>“Extensive vulvar involvement as initial GPA presentation”</td>
+          <td>2025</td>
+          <td>Single case</td>
+          <td>Vulva (necrotic lesions)</td>
+          <td>Necrotizing granulomatous vasculitis; PR3-ANCA positive</td>
+          <td>Corticosteroids + rituximab</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</section>
+
+    <!-- PAGE: CLINICAL COURSE -->
+<section id="course" class="page">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Clinical Course</div>
+      <div class="card-subtitle">Interactive timeline</div>
+    </div>
+
+    <div class="interactive-timeline">
+
+      <!-- 2022 -->
+      <div class="timeline-event">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2022</div>
+        <div class="timeline-title">Severe iron deficiency anemia</div>
+        <div class="timeline-details">
+          ~1-year history of heavy menstrual bleeding causing Hb 6.7 g/dL requiring PRBC transfusions.
+          <br><br>
+          GI work-up:
+          <ul>
+            <li>EGD: mild gastritis; H. pylori detected and treated.</li>
+            <li>Colonoscopy: normal.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Dec 2023 -->
+      <div class="timeline-event">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Dec 2023</div>
+        <div class="timeline-title">Chronic endometritis</div>
+        <div class="timeline-details">
+          Diagnosed on D&C → treated with doxycycline.
+        </div>
+      </div>
+
+      <!-- Feb 2024 -->
+      <div class="timeline-event">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Feb 2024</div>
+        <div class="timeline-title">Pelvic inflammatory disease</div>
+        <div class="timeline-details">
+          PID with dyspareunia, discharge & pelvic pain → treated with cefuroxime + metronidazole.
+          Began norethisterone for heavy menses.
+        </div>
+      </div>
+
+      <!-- Jan 2025 -->
+      <div class="timeline-event">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Jan 2025</div>
+        <div class="timeline-title">Inflammatory vulvovaginitis (resolved)</div>
+        <div class="timeline-details">
+          Vulvar/perianal plaques, superficial ulcer, copious discharge → resolved in 1 week on clindamycin + Polygynax.
+          <br><br>
+          <strong>Distinct from later necrotizing granulomatous disease.</strong>
+        </div>
+      </div>
+
+      <!-- Jun 2025 -->
+      <div class="timeline-event">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">≈ Jun 2025</div>
+        <div class="timeline-title">Onset of chronic anogenital disease</div>
+        <div class="timeline-details">
+          Gradual onset of pruritus, discharge, dyspareunia, recurrent draining perineal/vaginal nodules.
+          Husband asymptomatic.
+        </div>
+      </div>
+
+      <!-- Sep–Oct 2025 -->
+      <div class="timeline-event">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Late Sep–Oct 2025</div>
+        <div class="timeline-title">Ulceration phase begins</div>
+        <div class="timeline-details">
+          Painful slit-like vulvar ulcers, “knife-cut” intergluteal fissure, multiple perianal fissures.
+          <br><br>
+          Biopsy (8/10/2025):
+          <ul>
+            <li>Necrotizing granulomatous inflammation</li>
+            <li>Special stains negative</li>
+            <li>No malignancy</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 22–29 Oct 2025 -->
+      <div class="timeline-event">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">22–29 Oct 2025</div>
+        <div class="timeline-title">Gynecology admission</div>
+        <div class="timeline-details">
+          Infected vulvar ulcer post-biopsy, fissures, erosions, pruritus, foul discharge.
+          <br><br>
+          Management:
+          <ul>
+            <li>IV ceftriaxone + metronidazole</li>
+            <li>Daily wound care</li>
+            <li>G. B. Strep + CoNS → switched to Augmentin</li>
+          </ul>
+
+          Infectious disease:
+          <ul>
+            <li>VDRL negative</li>
+            <li>Atypical mycobacterial/fungal cultures recommended (not done)</li>
+            <li>Repeat culture: no growth</li>
+          </ul>
+
+          Dermatology:
+          <ul>
+            <li>Persistent ulcer + fissures</li>
+            <li>HIV negative</li>
+            <li>Differential: Crohn’s, atypical mycobacteria, fungi, autoimmune, syphilis</li>
+          </ul>
+
+          Rheumatology:
+          <ul>
+            <li>ANA 1:40</li>
+            <li>PR3+ / MPO+ ANCA</li>
+            <li>ESR 95, CRP 2.22</li>
+            <li>UA normal</li>
+            <li>CXR unremarkable</li>
+          </ul>
+
+          Discharged 29 Oct with Augmentin; colonoscopy pending.
+        </div>
+      </div>
+
+      <!-- Nov 2025 -->
+      <div class="timeline-event">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Early Nov 2025</div>
+        <div class="timeline-title">Post-discharge dermatology review</div>
+        <div class="timeline-details">
+          Findings:
+          <ul>
+            <li>Persistent vulvar ulceration</li>
+            <li>Persistent intergluteal fissure</li>
+            <li>Perianal nodules</li>
+          </ul>
+          Treatment:
+          <ul>
+            <li>Prednisolone 40 → 20 mg taper</li>
+            <li>Fluconazole 300 mg weekly ×2</li>
+          </ul>
+          Response:
+          <ul>
+            <li>Partial ulcer improvement</li>
+            <li>Pruritus persisted</li>
+          </ul>
+
+          GI: colonoscopy planned, not done.  
+          Rheum: follow-up pending.
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+    <!-- PAGE: TEACHING POINTS -->
+    <section id="learning" class="page">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Key Learning Points</div>
+          <div class="card-subtitle">From this specific case</div>
+        </div>
+        <ul>
+          <li>
+            Necrotizing granulomatous inflammation in vulvar/perianal biopsies
+            requires a systematic exclusion of infection (including atypical
+            mycobacteria and deep fungal infection) even when special stains are
+            negative.
+          </li>
+          <li>
+            Chronic anogenital fissures and ulcers with granulomas should raise
+            suspicion for metastatic/extraintestinal Crohn’s disease, even in
+            patients without gastrointestinal symptoms at presentation.
+          </li>
+          <li>
+            Dual-positive PR3/MPO ANCA in the setting of necrotizing granulomas
+            warrants evaluation for granulomatosis with polyangiitis and other
+            ANCA-associated vasculitides.
+          </li>
+          <li>
+            Systemic steroids may provide partial symptomatic relief but should
+            be used cautiously when infectious causes have not been fully
+            excluded.
+          </li>
+          <li>
+            Multidisciplinary collaboration (Dermatology, Gynecology,
+            Infectious Disease, Rheumatology, and Gastroenterology) is critical
+            in complex vulvar ulcer cases.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PAGE: PATIENT PERSPECTIVE -->
+    <section id="patient-perspective" class="page">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Patient Perspective</div>
+          <div class="card-subtitle">Quality of life & experience</div>
+        </div>
+        <p class="muted">
+          <!-- TODO: Add an anonymised, consented paragraph in your own words describing
+               the impact on daily life, intimacy, mobility and emotional wellbeing, if appropriate. -->
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Ethics & Consent</div>
+          <div class="card-subtitle">Use of images and clinical details</div>
+        </div>
+        <p class="muted">
+          <!-- TODO: Add a brief statement confirming that the patient provided informed consent
+               for the use of clinical information and images for teaching, and that all identifying
+               details have been removed. -->
+        </p>
+      </div>
+    </section>
+
+    <!-- PAGE: REFERENCES -->
+    <section id="references" class="page">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">References</div>
+          <div class="card-subtitle">Articles and resources used</div>
+        </div>
+        <ol class="muted">
+          <li>Parks AG et al. Crohn’s disease with cutaneous involvement. Proc R Soc Med. 1965.</li>
+          <li>Andreani SM et al. Crohn’s disease of the vulva. Int J Surg. 2010.</li>
+          <li>Laftah Z et al. Vulval Crohn’s disease: a clinical study of 22 patients. J Crohn’s Colitis. 2015.</li>
+          <li>Barret M et al. Crohn’s disease of the vulva. J Crohn’s Colitis. 2014.</li>
+          <li>Madnani NA et al. Isolated Crohn’s disease of the vulva. Indian J Dermatol Venereol Leprol. 2011.</li>
+          <li>Wells LE, Cohen D. Delayed diagnosis of vulvar Crohn’s disease in a patient with no gastrointestinal symptoms. Case Rep Dermatol. 2018.</li>
+          <li>Kim S et al. Vulvar Crohn’s disease in an adolescent diagnosed after unsuccessful surgical treatment. BMC Women’s Health. 2021.</li>
+          <li>Kokkali K et al. Crohn’s disease of the vulva: a case report. Folia Medica. 2021.</li>
+          <li>Gupta S et al. Exploring the unusual: vulvar Crohn’s disease with concomitant leukocytoclastic vasculitis. Indian J Dermatol Venereol Leprol. 2024.</li>
+        </ol>
+        <p class="footer-note">
+          This webapp is for educational purposes only and is not a substitute for individual clinical judgment.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // --- Navigation between pages ---
+    const buttons = document.querySelectorAll(".nav-button");
+    const pages = document.querySelectorAll(".page");
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-target");
+
+        buttons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        pages.forEach((page) => {
+          if (page.id === targetId) {
+            page.classList.add("active");
+          } else {
+            page.classList.remove("active");
+          }
+        });
+
+        window.scrollTo({ top: 0, behavior: "auto" });
+      });
+    });
+
+    // --- Theme, font family, font size controls ---
+    const themeToggle = document.getElementById("theme-toggle");
+    const fontSelect = document.getElementById("font-select");
+    const fontSizeSelect = document.getElementById("font-size-select");
+
+    // Load saved preferences
+    const savedTheme = localStorage.getItem("vulvarCaseTheme");
+    const savedFont = localStorage.getItem("vulvarCaseFontFamily");
+    const savedFontSize = localStorage.getItem("vulvarCaseFontSize");
+
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark");
+    }
+
+    if (savedFont) {
+      fontSelect.value = savedFont;
+      applyFontFamily(savedFont);
+    } else {
+      applyFontFamily("sans");
+    }
+
+    if (savedFontSize) {
+      fontSizeSelect.value = savedFontSize;
+      applyFontSize(savedFontSize);
+    } else {
+      applyFontSize("medium");
+    }
+
+    themeToggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      const current = document.body.classList.contains("dark") ? "dark" : "light";
+      localStorage.setItem("vulvarCaseTheme", current);
+    });
+
+    fontSelect.addEventListener("change", () => {
+      const val = fontSelect.value;
+      applyFontFamily(val);
+      localStorage.setItem("vulvarCaseFontFamily", val);
+    });
+
+    fontSizeSelect.addEventListener("change", () => {
+      const val = fontSizeSelect.value;
+      applyFontSize(val);
+      localStorage.setItem("vulvarCaseFontSize", val);
+    });
+
+    function applyFontFamily(key) {
+      let family;
+      if (key === "serif") {
+        family = 'Georgia, "Times New Roman", serif';
+      } else if (key === "mono") {
+        family = '"SF Mono", Menlo, Monaco, Consolas, "Courier New", monospace';
+      } else {
+        family = 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+      }
+      document.documentElement.style.setProperty("--font-family-main", family);
+    }
+
+    function applyFontSize(key) {
+      let size;
+      if (key === "small") {
+        size = "15px";
+      } else if (key === "large") {
+        size = "18px";
+      } else {
+        size = "16px";
+      }
+      document.documentElement.style.setProperty("--root-font-size", size);
+    }
+
+    // --- Print / PDF export ---
+    const printBtn = document.getElementById("print-btn");
+    if (printBtn) {
+      printBtn.addEventListener("click", () => {
+        window.print();
+      });
+    }
+  // --- INTERACTIVE TIMELINE LOGIC ---
+document.querySelectorAll(".timeline-event").forEach(event => {
+  event.addEventListener("click", () => {
+    // close others
+    document.querySelectorAll(".timeline-event").forEach(e => {
+      if (e !== event) e.classList.remove("open");
+    });
+    // toggle current
+    event.classList.toggle("open");
+  });
+});
+
+  </script>
+</body>
+</html>
