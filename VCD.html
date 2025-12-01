@@ -439,6 +439,40 @@
 .timeline-event:hover .timeline-title {
   color: var(--accent);
 }
+/* Differential table: highlight + hover expansion */
+.ddx-table {
+  margin-top: 0.6rem;
+}
+
+.ddx-table th,
+.ddx-table td {
+  padding: 0.7rem 0.8rem;
+  vertical-align: top;
+}
+
+.ddx-table tbody tr {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.ddx-table tbody tr:hover {
+  transform: scale(1.01);
+  background-color: rgba(250, 250, 210, 0.25);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+}
+
+.ddx-table ul {
+  margin: 0.25rem 0 0.25rem 1rem;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* Yellow semi-transparent highlighter */
+.hl {
+  background-color: rgba(253, 224, 71, 0.55); /* warm yellow, semi-transparent */
+  padding: 0 0.12em;
+  border-radius: 2px;
+}
 
   </style>
 
@@ -744,157 +778,194 @@
 <section id="differentials" class="page">
   <div class="card">
     <div class="card-header">
-      <div class="card-title">Differential Diagnoses</div>
-      <div class="card-subtitle">Ranked from most to least likely (current working list)</div>
+      <div class="card-title">Differential Diagnosis – Granulomatous Vulvar / Perianal Disease</div>
+      <div class="card-subtitle">Spacious table with hover expansion</div>
     </div>
 
-    <table class="table-like">
+    <table class="table-like ddx-table">
       <thead>
         <tr>
-          <th>Rank</th>
           <th>Diagnosis</th>
-          <th>Reasons supporting</th>
-          <th>Reasons against / gaps</th>
+          <th>Findings in Favor</th>
+          <th>Findings Against</th>
+          <th>Further Investigation (Rule-In / Rule-Out)</th>
         </tr>
       </thead>
       <tbody>
+
+        <!-- VULVAR / METASTATIC CROHN'S -->
         <tr>
-          <td>1</td>
-          <td>Metastatic cutaneous Crohn’s disease</td>
+          <td>
+            <span class="hl">Vulvar / Metastatic Crohn’s Disease</span>
+          </td>
           <td>
             <ul>
-              <li>“Knife-cut” intergluteal fissure</li>
-              <li>Vulvar + perianal + intergluteal distribution</li>
-              <li>Chronic nodules evolving into ulcers</li>
-              <li>Early Crohn’s may lack GI symptoms</li>
-              <li>Colonoscopy for current episode pending</li>
+              <li><span class="hl">Knife-cut intergluteal fissure</span></li>
+              <li><span class="hl">Vulvar + perianal involvement</span></li>
+              <li><span class="hl">Non-necrotizing granulomas</span> (matches Crohn’s pattern in literature table)</li>
+              <li>Chronic inflammatory course</li>
             </ul>
           </td>
           <td>
             <ul>
-              <li>Crohn’s granulomas usually non-necrotizing</li>
-              <li>Dual PR3/MPO ANCA positivity unusual for Crohn’s</li>
-              <li>January episode’s quick resolution atypical for Crohn’s</li>
-              <li>No bowel habit changes</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Granulomatosis with polyangiitis (GPA)</td>
-          <td>
-            <ul>
-              <li>Necrotizing granulomatous inflammation</li>
-              <li>Dual-positive ANCA (PR3 20, MPO 15.3)</li>
-              <li>Markedly elevated ESR (95)</li>
-              <li>Vulvar, perianal, intergluteal involvement</li>
-              <li>Negative infectious stains</li>
+              <li>No change in bowel habits</li>
+              <li>No diarrhea, abdominal pain, or weight loss</li>
+              <li><span class="hl">Dual PR3/MPO ANCA</span> pattern atypical for Crohn’s</li>
+              <li>Focal necrosis may be ulcer-related but is unusual for classic Crohn’s granulomas</li>
             </ul>
           </td>
           <td>
             <ul>
-              <li>Chest X-ray unremarkable</li>
-              <li>Urinalysis normal (no proteinuria/hematuria)</li>
-              <li>No ENT, pulmonary, or renal involvement documented so far</li>
-              <li>Vulvar/perianal-limited GPA is rare; genital involvement reported in &lt;1% of GPA cases</li>
-              <li>Rheumatology follow-up pending</li>
+              <li><span class="hl">Colonoscopy</span></li>
+              <li>Fecal calprotectin</li>
+              <li>MRI pelvis (perianal disease assessment)</li>
+              <li>Repeat biopsy if needed</li>
+              <li>GI consultation</li>
             </ul>
           </td>
         </tr>
 
+        <!-- ATYPICAL MYCOBACTERIAL INFECTION -->
         <tr>
-          <td>3</td>
-          <td>Atypical mycobacterial infection</td>
+          <td>
+            <span class="hl">Atypical Mycobacterial Infection (NTM)</span>
+          </td>
           <td>
             <ul>
-              <li>Necrotizing granulomas compatible with NTM</li>
-              <li>Often stain-negative; requires culture/PCR</li>
-              <li>Suggested by Infectious Disease team</li>
-              <li>Chronic ulcers/fissures can mimic Crohn’s or vasculitis</li>
+              <li>Ill-defined granulomas compatible with NTM</li>
+              <li>Ulceration and tissue necrosis can mimic inflammatory necrosis</li>
+              <li>Chronic nodules and fissures possible</li>
             </ul>
           </td>
           <td>
             <ul>
-              <li>AFB stain negative</li>
-              <li>No mycobacterial cultures performed</li>
-              <li>No systemic symptoms</li>
-              <li>Repeat wound culture negative (post-antibiotics)</li>
+              <li>AFB stains negative (though sensitivity is limited)</li>
+              <li>No systemic “B” symptoms documented</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li><span class="hl">AFB culture (essential)</span></li>
+              <li>Mycobacterial PCR</li>
+              <li>Repeat biopsy for culture/PCR if feasible</li>
+              <li>TB QuantiFERON (baseline)</li>
             </ul>
           </td>
         </tr>
 
-        
-
+        <!-- FOREIGN BODY GRANULOMATOUS REACTION -->
         <tr>
-          <td>4</td>
-          <td>Deep fungal infection</td>
+          <td>
+            <span class="hl">Foreign-Body Granulomatous Reaction</span>
+          </td>
           <td>
             <ul>
-              <li>Deep fungi can cause necrotizing granulomas</li>
-              <li>Included in Infectious Disease differential</li>
+              <li><span class="hl">Polarizable foreign material</span> present in multinucleated giant cells</li>
+              <li>History of chronic irritation / wound care can contribute</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Does not explain pattern of widespread granulomas</li>
+              <li>Does not explain ANCA positivity</li>
+              <li>Does not fully explain ulcer distribution</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>No specific additional testing required</li>
+              <li>Considered as a secondary contributor rather than primary diagnosis</li>
+            </ul>
+          </td>
+        </tr>
+
+        <!-- DEEP FUNGAL INFECTION -->
+        <tr>
+          <td>
+            <span class="hl">Deep Fungal Infection</span>
+            <br>(Sporothrix, Blastomyces, Histoplasma, etc.)
+          </td>
+          <td>
+            <ul>
+              <li>Deep fungi can cause granulomatous inflammation</li>
+              <li>Ulceration and chronic plaques possible</li>
             </ul>
           </td>
           <td>
             <ul>
               <li>PAS/GMS stains negative</li>
-              <li>No clear exposure risks documented</li>
+              <li>No clear travel / environmental exposure documented</li>
               <li>No systemic symptoms</li>
             </ul>
           </td>
-        </tr>
-
-        <tr>
-          <td>5</td>
-          <td>Secondary syphilis</td>
           <td>
             <ul>
-              <li>Considered early for any genital ulcer</li>
-            </ul>
-          </td>
-          <td>
-            <ul>
-              <li>VDRL negative</li>
-              <li>Histology incompatible</li>
+              <li>Fungal culture</li>
+              <li>Fungal PCR</li>
+              <li>Serologies if specific exposure is suspected</li>
             </ul>
           </td>
         </tr>
 
+        <!-- SARCOIDOSIS -->
         <tr>
-          <td>6</td>
-          <td>Autoimmune granulomatous vulvitis / immune-mediated process</td>
+          <td>
+            <span class="hl">Sarcoidosis</span>
+          </td>
           <td>
             <ul>
-              <li>Persistent inflammation at multiple sites</li>
+              <li>Non-necrotizing granulomas possible in vulvar skin</li>
             </ul>
           </td>
           <td>
             <ul>
-              <li>Does not strongly explain necrotizing granulomas</li>
-              <li>Diagnosis of exclusion</li>
+              <li>Typical “naked” granulomas not described here</li>
+              <li>Ulceration is uncommon</li>
+              <li>No pulmonary, ocular, or systemic features documented</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Chest X-ray or CT</li>
+              <li>Serum ACE (low specificity, supportive only)</li>
             </ul>
           </td>
         </tr>
 
+        <!-- GRANULOMATOSIS WITH POLYANGIITIS -->
         <tr>
-          <td>7</td>
-          <td>Foreign body / secondary infection</td>
+          <td>
+            <span class="hl">Granulomatosis with Polyangiitis (GPA)</span>
+          </td>
           <td>
             <ul>
-              <li>Polarizable foreign material in giant cells</li>
-              <li>Initial culture: Group B Strep + coagulase-negative Staph</li>
+              <li><span class="hl">Dual PR3 + MPO ANCA</span> positivity</li>
+              <li>Mucocutaneous ulceration possible in ANCA-associated vasculitis</li>
             </ul>
           </td>
           <td>
             <ul>
-              <li>Does not explain necrotizing granulomas</li>
-              <li>Infection resolved but ulcers persisted</li>
+              <li><span class="hl">No vasculitis on biopsy</span> in current samples</li>
+              <li>Non-necrotizing granulomas not classic GPA pattern in most descriptions</li>
+              <li>No ENT, renal, or pulmonary involvement documented so far</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Repeat ANCA (trend over time)</li>
+              <li>Serial urinalysis + creatinine monitoring</li>
+              <li>Chest imaging</li>
+              <li>ENT evaluation for subclinical disease</li>
+              <li>Repeat biopsy only if systemic signs develop</li>
             </ul>
           </td>
         </tr>
+
       </tbody>
     </table>
   </div>
 </section>
+
 
 
     <!-- PAGE: INVESTIGATIONS -->
@@ -1718,3 +1789,4 @@ document.querySelectorAll(".timeline-event").forEach(event => {
   </script>
 </body>
 </html>
+
